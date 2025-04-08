@@ -25,6 +25,14 @@
       name: libapache2-mod-php
       state: latest
 
+  - name: copy default page
+    copy:
+      src: default_page.html
+      dest: /var/www/html/index.html
+      owner: root
+      group: root
+      mode: 644
+
 - hosts: db_server
   become: true
   tasks:
