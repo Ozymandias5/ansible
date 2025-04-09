@@ -10,6 +10,17 @@
       upgrade: dist
       update_cache: yes
 
+- hosts: all
+  become: true
+  tasks:
+
+  - name: add key to user simone
+    tags: always
+    authorized_key:
+      user: simone
+      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP/cl1ojhC1iKmDUa4rkaUVc/McBBQ6dz850i1GLAiGQ ansible"
+      state: absent
+
 - hosts: web_server
   tags: apache,apache2
   become: true
@@ -52,3 +63,20 @@
     apt:
       name: samba
       state: latest
+
+- hosts: workstation
+  become: true
+  tasks:
+
+  - name: install unzip
+    package:
+      name: unzip
+
+  - name: install terraform
+    unarchive:
+      src: https://releases.hashicorp.com/terraform/1.11.3/terraform_1.11.3_linux_amd64.zip
+      dest: /usr/local/bin
+      remote_src: yes
+      owner: root
+      group: root
+      mode: 755
