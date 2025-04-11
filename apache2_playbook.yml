@@ -12,71 +12,26 @@
 
 - hosts: all
   become: true
-  tasks:
-
-  - name: add key to user simone
-    tags: always
-    authorized_key:
-      user: simone
-      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP/cl1ojhC1iKmDUa4rkaUVc/McBBQ6dz850i1GLAiGQ ansible"
-      state: absent
+  roles:
+    - base
 
 - hosts: web_server
   tags: apache,apache2
   become: true
-  tasks:
-
-  - name: install apache
-    apt:
-      name: apache2
-      state: latest
-
-  - name: install php for apache
-    apt:
-      name: libapache2-mod-php
-      state: latest
-
-  - name: copy default page
-    copy:
-      src: default_page.html
-      dest: /var/www/html/index.html
-      owner: root
-      group: root
-      mode: 644
+  roles:
+    - web_server
 
 - hosts: db_server
   become: true
-  tasks:
-
-  - name: install mariadb
-    tags: db
-    apt:
-      name: mariadb-server
-      state: latest
+  roles:
+    - db_server
 
 - hosts: file_server
   become: true
-  tasks:
-
-  - name: install samba package
-    tags: fs
-    apt:
-      name: samba
-      state: latest
+  roles:
+    - file_server
 
 - hosts: workstation
   become: true
-  tasks:
-
-  - name: install unzip
-    package:
-      name: unzip
-
-  - name: install terraform
-    unarchive:
-      src: https://releases.hashicorp.com/terraform/1.11.3/terraform_1.11.3_linux_amd64.zip
-      dest: /usr/local/bin
-      remote_src: yes
-      owner: root
-      group: root
-      mode: 755
+  roles:
+    - workstation

@@ -1,0 +1,5 @@
+- name: install mariadb
+  tags: db
+  apt:
+    name: "{{ maria_package_name }}"
+    state: latest

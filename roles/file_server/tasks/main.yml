@@ -1,0 +1,5 @@
+- name: install samba package
+  tags: fs
+  apt:
+    name: "{{ file_package_name }}"
+    state: latest
